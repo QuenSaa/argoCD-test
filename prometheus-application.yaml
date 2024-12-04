@@ -4,18 +4,11 @@ metadata:
   name: prometheus
   namespace: argocd
 spec:
-  project: default  # Verwende 'default' oder das von dir erstellte Projekt
+  project: default
   source:
-    repoURL: https://github.com/QuenSaa/argoCD-test.git  # Dein Git-Repo
-    targetRevision: HEAD
-    path: charts/prometheus  # Der Pfad im Repo, wo das Prometheus Helm-Chart definiert ist
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: monitoring  # Namespace, in dem Prometheus installiert werden soll
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true  # Namespace wird automatisch erstellt, falls er nicht existiert
-
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 13.7.2
+    chart: kube-prometheus-stack
+destination:
+  server: https://kubernetes.default.svc
+  namespace: prometheus
