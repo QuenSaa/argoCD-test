@@ -29,7 +29,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: 'https://github.com/your-repo/monitoring-argo-cd.git'
+        repoURL: 'https://github.com/QuenSaa/argoCD-test.git'  # Dein Repository
         targetRevision: HEAD
         path: charts/{{name}}
       destination:
