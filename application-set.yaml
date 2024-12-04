@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - name: prometheus
+            namespace: monitoring
+            chart:
+              name: prometheus
+              repository: https://charts.bitnami.com/bitnami
+              version: "15.1.0"
+              values:
+                - "values/prometheus-values.yaml"
+          - name: grafana
+            namespace: monitoring
+            chart:
+              name: grafana
+              repository: https://charts.bitnami.com/bitnami
+              version: "6.42.0"
+              values:
+                - "values/grafana-values.yaml"
+  template:
+    metadata:
+      name: '{{name}}-{{namespace}}'
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/your-repo/monitoring-argo-cd.git'
+        targetRevision: HEAD
+        path: charts/{{name}}
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+
